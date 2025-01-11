@@ -10,21 +10,21 @@ Visa Platinum 7000 79** **** 6361 - выход функции
 Счет 73654108430135874305 - входной аргумент
 Счет **4305 - выход функции
     """
-
+#    print(card_number_account)
 
     if 'Счет' in card_number_account:
 
         from  masks import get_mask_account
-
+#        print(f'Счет {(get_mask_account(int(card_number_account[-20:])))}')
         return f'Счет {(get_mask_account(int(card_number_account[-20:])))}'
     else:
 
         from masks import get_mask_card_number
-
+#        print(f'{card_number_account[:-16]}{(get_mask_card_number(int(card_number_account[-16:])))}')
         return f'{card_number_account[:-16]}{(get_mask_card_number(int(card_number_account[-16:])))}'
 
-#card_number_account = 'Visa Platinum 8990922113665229'
-#print(mask_account_card(card_number_account))
+card_number_account = 'Visa Platinum 8990922113665229'
+print(mask_account_card(card_number_account))
 
 
 
@@ -34,8 +34,8 @@ def get_date (date_time: str) -> str:
  и возвращает строку с датой в формате
 "ДД.ММ.ГГГГ" ("11.03.2024")
     """
-
+#    print(date_time)
     return f'{date_time[0:4]}.{date_time[5:7]}.{date_time[8:10]}'
 
-#date_time = '2024-03-11T02:26:18.671407'
-#print(get_date(date_time))
+date_time = '2024-03-11T02:26:18.671407'
+print(get_date(date_time))
