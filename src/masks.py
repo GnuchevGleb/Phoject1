@@ -1,4 +1,4 @@
-def get_mask_card_number(card_numbers: int) -> str:
+def get_mask_card_number(card_numbers: str) -> str:
     """
     Функция маскировки номера банковской карты
     Пример работы функции:
@@ -7,10 +7,10 @@ def get_mask_card_number(card_numbers: int) -> str:
     """
 
     card_numbers_str = str(card_numbers)
-    return f"{card_numbers_str[0:4]} {card_numbers_str[4:6]}** **** {card_numbers_str[12:]}"
+    return str(f"{card_numbers_str[0:4]} {card_numbers_str[4:6]}** **** {card_numbers_str[12:]}")
 
 
-def get_mask_account(bank_accounts: int) -> str:
+def get_mask_account(bank_accounts: str) -> str:
     """
     Функция маскировки номера банковского счета
     Пример работы функции:
@@ -19,4 +19,4 @@ def get_mask_account(bank_accounts: int) -> str:
     """
 
     bank_accounts_str = str(bank_accounts)
-    return f"**{bank_accounts_str[-4:]}"
+    return str(f"**{bank_accounts_str[-4:]}")
