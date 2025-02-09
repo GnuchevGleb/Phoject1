@@ -1,4 +1,4 @@
-def get_mask_card_number(card_numbers: str) -> str:
+def get_mask_card_number(card_numbers_str: str) -> str:
     """
     Функция маскировки номера банковской карты
     Пример работы функции:
@@ -6,11 +6,18 @@ def get_mask_card_number(card_numbers: str) -> str:
     7000 79** **** 6361 выход функции
     """
 
-    card_numbers_str = str(card_numbers)
-    return str(f"{card_numbers_str[0:4]} {card_numbers_str[4:6]}** **** {card_numbers_str[12:]}")
+    if card_numbers_str.isdigit():
+
+        if len(card_numbers_str) == 16:
+
+            return str(f"{card_numbers_str[0:4]} {card_numbers_str[4:6]}** **** {card_numbers_str[12:]}")
+        else:
+            return str("ошибка длины номера карты")
+
+    return str("ошибка ввода номера карты")
 
 
-def get_mask_account(bank_accounts: str) -> str:
+def get_mask_account(bank_accounts_str: str) -> str:
     """
     Функция маскировки номера банковского счета
     Пример работы функции:
@@ -18,5 +25,10 @@ def get_mask_account(bank_accounts: str) -> str:
     **4305 выход функции
     """
 
-    bank_accounts_str = str(bank_accounts)
-    return str(f"**{bank_accounts_str[-4:]}")
+    if bank_accounts_str.isdigit():
+        if len(bank_accounts_str) == 20:
+            return str(f"**{bank_accounts_str[-4:]}")
+        else:
+            return str("ошибка длины номера банковского счета")
+
+    return str("ошибка ввода номера банковского счета")
