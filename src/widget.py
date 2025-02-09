@@ -12,29 +12,34 @@ def mask_account_card(card_number_account: str) -> str:
     """
 
     if "Счет" in card_number_account:
+        if card_number_account[-20:].isdigit():
+            from src.masks import get_mask_account  # type: ignore
 
-        from masks import get_mask_account  # type: ignore
+            return str(f"Счет {(get_mask_account(str(card_number_account[-20:])))}")
+        return str("ошибка ввода")
 
-        return f"Счет {(get_mask_account(str(card_number_account[-20:])))}"
-    else:
+    if "Maestro" or "MasterCard" in card_number_account:
+        if card_number_account[-16:].isdigit():
+            from src.masks import get_mask_card_number  # type: ignore
 
-        from masks import get_mask_card_number  # type: ignore
-
-        return f"{card_number_account[:-16]}{(get_mask_card_number(str(card_number_account[-16:])))}"
-
-
-# card_number_account = 'Visa Platinum 8990922113665229'
-# print(mask_account_card(card_number_account))
+            return f"{card_number_account[:-16]}{(get_mask_card_number(str(card_number_account[-16:])))}"
+        return str("ошибка ввода")
 
 
-def get_date(date_time: str) -> str:
-    """Функция, которая принимает на вход строку с датой в формате
-    "2024-03-11T02:26:18.671407"
-     и возвращает строку с датой в формате
-    "ДД.ММ.ГГГГ" ("11.03.2024")
+def get_date(date_time_1: str) -> str:
+
     """
-    return f"{date_time[0:4]}.{date_time[5:7]}.{date_time[8:10]}"
+     Функция, которая принимает на вход строку с датой в формате
+    "2024-03-11T02:26:18.671407"
+      и возвращает строку с датой в формате
+     "ДД.ММ.ГГГГ" ("11.03.2024")
+    """
+
+    print(len(date_time_1))
+    if len(date_time_1) > 0:
+        return f"{date_time_1[8:10]}.{date_time_1[5:7]}.{date_time_1[0:4]}"
+    return "ошибка формата даты"
 
 
-# date_time = '2024-03-11T02:26:18.671407'
-# print(get_date(date_time))
+date_time = ""
+print(get_date(date_time))
