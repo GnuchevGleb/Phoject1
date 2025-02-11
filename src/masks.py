@@ -12,9 +12,9 @@ def get_mask_card_number(card_numbers_str: str) -> str:
 
             return str(f"{card_numbers_str[0:4]} {card_numbers_str[4:6]}** **** {card_numbers_str[12:]}")
         else:
-            return str("ошибка длины номера карты")
+            return str("ошибка ввода")
 
-    return str("ошибка ввода номера карты")
+    return str("ошибка ввода")
 
 
 def get_mask_account(bank_accounts_str: str) -> str:
@@ -29,6 +29,6 @@ def get_mask_account(bank_accounts_str: str) -> str:
         if len(bank_accounts_str) == 20:
             return str(f"**{bank_accounts_str[-4:]}")
         else:
-            return str("ошибка длины номера банковского счета")
+            return str("ошибка ввода")
 
-    return str("ошибка ввода номера банковского счета")
+    return str("ошибка ввода")

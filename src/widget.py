@@ -41,5 +41,5 @@ def get_date(date_time_1: str) -> str:
     return "ошибка формата даты"
 
 
-date_time = ""
-print(get_date(date_time))
+# date_time = ""
+# print(get_date(date_time))
