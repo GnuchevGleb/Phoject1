@@ -7,7 +7,6 @@ def card_number_generator(start: int, stop: int) -> str:
     генератор card_number_generator выдает номера банковских карт в формате
     XXXX XXXX XXXX XXXX, где X — цифра номера карты. Генератор может сгенерировать
     номера карт в заданном диапазоне от 0000 0000 0000 0001 до 9999 9999 9999 9999
-
     """
 
     if (
@@ -42,9 +41,11 @@ def card_number_generator(start: int, stop: int) -> str:
 
 
 def filter_by_currency(transaction_list: list[dict], valute: str = "USD") -> Generator:
-    """Принимает список словарей, представляющих транзакции. Возвращает по одному словарю из списка, в котором валюта
+    """
+    Принимает список словарей, представляющих транзакции. Возвращает по одному словарю из списка, в котором валюта
     операции соответствует заданной (по умолчанию USD, для изменения вторым аргументом надо передать буквенный код
-    валюты)"""
+    валюты)
+    """
     for transaction in transaction_list:
         if transaction["operationAmount"]["currency"]["code"] == valute:
             # print(transaction)
@@ -52,6 +53,8 @@ def filter_by_currency(transaction_list: list[dict], valute: str = "USD") -> Gen
 
 
 def transaction_descriptions(transaction_list: list[dict]) -> Generator:
-    """Принимает список словарей, представляющих транзакции. Возвращает описания каждой операции из списка по одному"""
+    """
+    Принимает список словарей, представляющих транзакции. Возвращает описания каждой операции из списка по одному
+    """
     for transaction in transaction_list:
         yield transaction["description"]
