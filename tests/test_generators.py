@@ -3,7 +3,7 @@ from src.generators import card_number_generator, filter_by_currency, transactio
 
 
 def test_card_number_generator_min():
-    # generator = card_number_generator(1, 1)
+
     assert card_number_generator(1, 5) == [
         "0000 0000 0000 0001",
         "0000 0000 0000 0002",
