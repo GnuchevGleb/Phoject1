@@ -10,7 +10,7 @@ def mask_account_card(card_number_account: str) -> str:
     Счет 73654108430135874305 - входной аргумент
     Счет **4305 - выход функции
     """
-
+    print(card_number_account)
     if "Счет" in card_number_account:
         if card_number_account[-20:].isdigit():
             from src.masks import get_mask_account  # type: ignore
