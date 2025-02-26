@@ -140,3 +140,15 @@ def test_transactions():
             "to": "Счет 14211924144426031657",
         },
     ]
+
+
+
+
+@pytest.fixture
+def filename_zero():
+    return  ()
+
+
+@pytest.fixture
+def filename():
+    return  ("mylog+.txt")
