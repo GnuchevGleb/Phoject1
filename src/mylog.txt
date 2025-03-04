@@ -1,4 +1,4 @@
-2025-02-27 01:16:19,176 - INFO - decorator - Функция  mask_account_cards 
-2025-02-27 01:16:19,176 - INFO - decorator - Время начала выполнения функции  2025-02-27 01:16:19.176624
-2025-02-27 01:16:19,176 - INFO - decorator - Функция mask_account_cards выполнялась 0:00:00.000200 секунд
-2025-02-27 01:16:19,176 - INFO - decorator - my_function ok
+2025-03-04 23:55:51,200 - INFO - decorator - Функция  mask_account_cards 
+2025-03-04 23:55:51,200 - INFO - decorator - Время начала выполнения функции  2025-03-04 23:55:51.200017
+2025-03-04 23:55:51,200 - INFO - decorator - Функция mask_account_cards выполнялась 0:00:00.000155 секунд
+2025-03-04 23:55:51,200 - INFO - decorator - my_function ok
