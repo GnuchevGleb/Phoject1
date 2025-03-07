@@ -46,12 +46,9 @@ def sort_by_date(dictionaries_list: list[dict[str, Any]], reverse: bool = True) 
        {'id': 939719570, 'state': 'EXECUTED', 'date': '2018-06-30T02:08:58.425572'}]
     """
 
-    #    global date_object
-
     try:
         for step in dictionaries_list:
             date_object = step.get("date")[:10]
-            # print(date_object)
             datetime.strptime(date_object, "%Y-%m-%d").date()
 
     except:

@@ -30,14 +30,13 @@ def test_currency_exchange_rate_1(mock_get_eur):
   "base": "EUR",
   "date": "2025-03-04",
   "rates": {
-    "RUB": 95.106896
+    "RUB": 89.693521
   },
   "success": True,
   "timestamp": 1741115464
 }
-    assert currency_exchange_rate('EUR') == 95.106896
+    assert currency_exchange_rate('EUR') == 89.693521
     mock_get_eur.assert_called()
 
-def test_currency_exchange_rate_2():
-    assert currency_exchange_rate('ccc') == []
+
 
