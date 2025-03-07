@@ -1,82 +1,91 @@
 import json
-import os.path
-import sys
 
+import random
 
 from src.external_api import currency_exchange_rate
+import os
+from dotenv import load_dotenv
+
 
 list_tr = []
 
 
-def list_transactions() -> list:
+def list_transactions(way) -> list:
     """функция считывает данные из файла operations.json в директории data в формате json
     и преобразует в формат python"""
+
+    print(type(way), way)
     try:
-        script_dir = os.path.dirname(os.path.dirname(os.path.abspath(sys.argv[0])))  # папка со скриптом
-        text_file = os.path.join(script_dir, "data", "operations.json")  # объединяем путь к каталогу
-        # с названием файла, собираем абсолютный путь к файлу operations.json
-        # print(text_file)
-        with open(text_file, "r", encoding="utf-8") as file:  # Открываем файл
+
+        with open(way, "r", encoding="utf-8") as file:  # Открываем файл
             text = file.read()  # Читаем содержимое в переменную text
-            print(text)  # выводим содержимое файла
 
-        return json.loads(text)
+            elements = len(json.loads(text))
+            random_number = random.randint(1, elements)
+
+        return json.loads(text)[random_number]  # возвращаем случайно выбранную транзакцию
     except FileNotFoundError:
-        list_transaction = []
-        return list_transaction
+        print("FileNotFoundError")
+        return []
     except Exception as e:
-        list_transaction = []
-        return list_transaction
+        print("Exception")
+        return []
 
 
-print(list_transactions())
-# list_tr = list_transactions()
+# определяем путь к файлу с транзакциями
+load_dotenv()
+way = os.getenv("WAY_TRANSACTION")
+
+list_tr = list_transactions(way)
 
 
-def transactions_sum(list_transaction: list) -> list:
+def transactions_sum(list_transaction: dict) -> float:
 
     """функция вычисляет сумму транзакций в рублях. Валюту пересчитывает по курсу"""
 
+    print(f" рассматриваем транзакцию {list_transaction}")
     transactions_sum_list = []
-    currency_eur = currency_exchange_rate("EUR")
-    if isinstance(currency_eur, (int, float)) == True:
-        print(currency_eur, "курс EUR")
-    else:
-        print("курс не определён")
-        return transactions_sum_list
 
-    currency_usd = currency_exchange_rate("USD")
-    if isinstance(currency_usd, (int, float)) == True:
-        print(currency_usd, "курс USD")
+    if len(list_transaction) < 1:
+        print("ошибка данных")
+        return "ошибка данных"
     else:
-        print("курс не определён")
-        return transactions_sum_list
+        currency_eur = currency_exchange_rate("EUR")
+        if isinstance(currency_eur, (int, float)) == True:
+            print(currency_eur, "курс EUR")
+        else:
+            print("курс не определён")
+            return transactions_sum_list
 
-    for transaction in list_transactions():
-        for operationAmount in transaction:
+        currency_usd = currency_exchange_rate("USD")
+        if isinstance(currency_usd, (int, float)) == True:
+            print(currency_usd, "курс USD")
+        else:
+            print("курс не определён")
+            return transactions_sum_list
+
+        for operationAmount in list_transaction:
+
             if operationAmount == "operationAmount":
 
-                if transaction[operationAmount].get("currency").get("code") == "RUB":
-                    transaction_sum = float(transaction[operationAmount].get("amount"))
+                if list_transaction[operationAmount].get("currency").get("code") == "RUB":
+
+                    transaction_sum = float(list_transaction[operationAmount].get("amount"))
                     transaction_sum_f = float(f"{transaction_sum:.2f}")
-                    print(f"{transaction_sum_f}:{transaction[operationAmount].get('currency').get('code')}")
-                    transactions_sum_list.append(
-                        f"{transaction_sum_f}:{transaction[operationAmount].get('currency').get('code')}"
-                    )
-                if transaction[operationAmount].get("currency").get("code") == "USD":
-                    transaction_sum = float(transaction[operationAmount].get("amount")) * float(currency_usd)
+                    print(f"{transaction_sum_f}:   {list_transaction[operationAmount].get('currency').get('code')}")
+
+                if list_transaction[operationAmount].get("currency").get("code") == "USD":
+                    transaction_sum = float(list_transaction[operationAmount].get("amount")) * float(currency_usd)
                     transaction_sum_f = float(f"{transaction_sum:.2f}")
-                    transactions_sum_list.append(f"{transaction_sum_f}:RUB по курсу USD")
-                    print(f"{transaction_sum_f}:RUB по курсу USD")
-                if transaction[operationAmount].get("currency").get("code") == "EUR":
-                    transaction_sum = float(transaction[operationAmount].get("amount")) * float(currency_eur)
+
+                    print(f"{transaction_sum_f}:   RUB по курсу USD")
+                if list_transaction[operationAmount].get("currency").get("code") == "EUR":
+                    transaction_sum = float(list_transaction[operationAmount].get("amount")) * float(currency_eur)
                     transaction_sum_f = float(f"{transaction_sum:.2f}")
-                    transactions_sum_list.append(f"{transaction_sum_f}:RUB по курсу EUR")
-                    print(f"{transaction_sum_f}:RUB по курсу EUR")
 
-        # print(transaction)
+                    print(f"{transaction_sum_f}:   RUB по курсу EUR")
 
-    return transactions_sum_list
+    return transaction_sum_f
 
 
-print(transactions_sum(list_tr))
+print("Сумма транзакции  ", transactions_sum(list_tr))
