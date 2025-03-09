@@ -1,6 +1,8 @@
 import datetime
 import logging
 
+from mypy.types import AnyType
+
 
 def log(filename=None):
     """
@@ -13,7 +15,7 @@ def log(filename=None):
         filemode="w",
     )
 
-    def wrapper(function):
+    def wrapper(function)->None:
         def inner(arg):
             try:
                 print(function, arg, filename)
