@@ -53,6 +53,11 @@ def zero():
     return []
 
 
+@pytest.fixture
+def zeroo():
+    return {}
+
+
 #
 #
 @pytest.fixture
@@ -142,24 +147,29 @@ def test_transactions():
     ]
 
 
-
-
 @pytest.fixture
 def filename_zero():
-    return  ()
+    return ()
 
 
 @pytest.fixture
 def filename():
-    return  ("mylog+.txt")
+    return "mylog+.txt"
+
 
 @pytest.fixture
 def test_transactions_1():
-    return {'id': 104807525, 'state': 'EXECUTED', 'date': '2019-06-01T06:46:16.803326',
-    'operationAmount': {'amount': '60888.63', 'currency': {'name': 'руб.', 'code': 'RUB'}},
-    'description': 'Перевод с карты на счет', 'from': 'МИР 8201420097886664', 'to': 'Счет 35116633516390079956'}
+    return {
+        "id": 104807525,
+        "state": "EXECUTED",
+        "date": "2019-06-01T06:46:16.803326",
+        "operationAmount": {"amount": "60888.63", "currency": {"name": "руб.", "code": "RUB"}},
+        "description": "Перевод с карты на счет",
+        "from": "МИР 8201420097886664",
+        "to": "Счет 35116633516390079956",
+    }
 
 
 @pytest.fixture
 def we():
-    return '/home'
+    return "/home"

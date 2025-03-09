@@ -1,12 +1,13 @@
 import json
-import random
 import logging
-from src.external_api import currency_exchange_rate
 import os
+import random
+
 from dotenv import load_dotenv
 
+from src.external_api import currency_exchange_rate
+from src.list_currency import list_currency
 
-list_tr = []
 logger = logging.getLogger("utils.py")
 file_handler = logging.FileHandler("../logs/utils.log", "w")
 file_formatter = logging.Formatter("%(asctime)s %(name)s %(levelname)s: %(message)s")
@@ -14,15 +15,16 @@ file_handler.setFormatter(file_formatter)
 logger.addHandler(file_handler)
 logger.setLevel(logging.DEBUG)
 
+dictionary_tr = {}
 
-def list_transactions(way) -> list:
+
+def dictionary_transactions(wa_ys: str) -> dict:
     """функция считывает данные из файла operations.json в директории data в формате json
     и преобразует в формат python"""
-    logger.info("начало работы функции list_transactions")
+    logger.info("начало работы функции dictionary_transactions")
 
     try:
-
-        with open(way, "r", encoding="utf-8") as file:  # Открываем файл
+        with open(wa_ys, "r", encoding="utf-8") as file:  # Открываем файл
             text = file.read()  # Читаем содержимое в переменную text
             logger.info("читаем содержимое файла в переменную text")
             elements = len(json.loads(text))
@@ -33,77 +35,61 @@ def list_transactions(way) -> list:
     except FileNotFoundError:
         logger.error("FileNotFoundError")
         print("ошибка FileNotFoundError")
-        return []
+        return {}
     except Exception as e:
         logger.error("ошибка Exception")
-        print("Exception")
-        return []
+        print("Exception", e)
+        return {}
 
 
 # определяем путь к файлу с транзакциями
 load_dotenv()
-way = os.getenv("WAY_TRANSACTION")
-list_tr = list_transactions(way)
+dictionary_tr = dictionary_transactions(os.getenv("WAY_TRANSACTION"))
 
 
-def transactions_sum(list_transaction: dict) -> float or str:
+def transactions_sum(dict_transaction: dict) -> float:
 
     """функция вычисляет сумму транзакций в рублях. Валюту пересчитывает по курсу"""
 
+    global summa_tr, currency
     logger.info("начало работы функции transactions_sum")
     logger.info("рассматриваем транзакцию: ")
-    logger.info(list_transaction)
+    logger.info(dict_transaction)
 
-    print(f" рассматриваем транзакцию: {list_transaction}")
-    transactions_sum_list = []
+    print(f" рассматриваем транзакцию: {dict_transaction}")
+    if dict_transaction == {}:  # проверяем транзакция пустая или нет
+        logger.info("нет транзакции")
+        summa_tr = 0
+        return summa_tr
 
-    if len(list_transaction) < 1:
-        logger.error("ошибка - файл пуст")
-        print("ошибка данных")
-        return "ошибка данных"
+    for operation in dict_transaction:  # определяем валюту в транзакции
+        if operation == "operationAmount":
+            currency = dict_transaction[operation].get("currency").get("code")
+            summa_tr = float(dict_transaction[operation].get("amount"))
+            print(currency, summa_tr)
+            logger.info("валюта транзакции: ")
+            logger.info(currency)
+            logger.info("сумма транзакции: ")
+            logger.info(summa_tr)
+
+    if currency == "RUB":
+        logger.info("сумма транзакции в рублях: ")
+        logger.info(summa_tr)
+        return summa_tr  # возвращаем сумму транзакции в рублях
+
+    if currency in list_currency:  # проверяем есть ли данная валюта в списке конвертируемых
+        course_currency = currency_exchange_rate(currency)  # отправляем запрос на конвертацию
+
+        summa_tr = round(summa_tr * course_currency, 2)  # вычисляем транзакцию с учётом курса валюты
+        logger.info("сумма транзакции с учётом курса валюты: ")
+        logger.info(summa_tr)
+        return summa_tr
+
     else:
-        logger.info("отправляем запрос курса EUR")
-        currency_eur = currency_exchange_rate("EUR")
-        if isinstance(currency_eur, (int, float)) == bool(True):
-            print(currency_eur, "курс EUR")
-        else:
-            logger.error("ошибка - курс не определён")
-            print("курс не определён")
-            return transactions_sum_list
-
-        logger.info("отправляем запрос курса USD")
-        currency_usd = currency_exchange_rate("USD")
-        if isinstance(currency_usd, (int, float)) == bool(True):
-            print(currency_usd, "курс USD")
-        else:
-            logger.error("ошибка - курс не определён")
-            print("курс не определён")
-            return transactions_sum_list
-
-        for operationAmount in list_transaction:
-
-            if operationAmount == "operationAmount":
-
-                if list_transaction[operationAmount].get("currency").get("code") == "RUB":
-                    logger.info("расчёт курса RUB")
-                    transaction_sum = float(list_transaction[operationAmount].get("amount"))
-                    transaction_sum_f = float(f"{transaction_sum:.2f}")
-                    print(f"{transaction_sum_f}:   {list_transaction[operationAmount].get('currency').get('code')}")
-
-                if list_transaction[operationAmount].get("currency").get("code") == "USD":
-                    logger.info("расчёт курса USD")
-                    transaction_sum = float(list_transaction[operationAmount].get("amount")) * float(currency_usd)
-                    transaction_sum_f = float(f"{transaction_sum:.2f}")
-                    print(f"{transaction_sum_f}:   RUB по курсу USD")
-
-                if list_transaction[operationAmount].get("currency").get("code") == "EUR":
-                    logger.info("расчёт курса EUR")
-                    transaction_sum = float(list_transaction[operationAmount].get("amount")) * float(currency_eur)
-                    transaction_sum_f = float(f"{transaction_sum:.2f}")
-                    print(f"{transaction_sum_f}:   RUB по курсу EUR")
-    logger.info("сумма транзакции:")
-    logger.info(transaction_sum_f)
-    return transaction_sum_f
+        print("эта валюта не может быть конвертирована")
+        logger.error("эта валюта не может быть конвертирована")
+        summa_tr = 0
+        return summa_tr
 
 
-print("Сумма транзакции  ", transactions_sum(list_tr))
+print("Сумма транзакции  ", transactions_sum(dictionary_tr))
