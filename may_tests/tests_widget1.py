@@ -1,4 +1,6 @@
-from src.widget import mask_account_card, get_date
+import pytest
+
+from src.widget import get_date, mask_account_card
 
 #
 # def test_mask_account_card():
@@ -13,7 +15,6 @@ from src.widget import mask_account_card, get_date
 #     assert mask_account_card('Счет 7 65410430135874305') == "ошибка ввода"
 #     assert mask_account_card('Счет 7sd -410430135874305') == "ошибка ввода"
 
-import pytest
 
 
 @pytest.mark.parametrize(

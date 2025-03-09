@@ -1,5 +1,5 @@
-from typing import Any
 from datetime import datetime
+from typing import Any
 
 
 def filter_by_state(dictionaries_list: list[dict[str, Any]], states: str = "EXECUTED") -> list[dict[str, Any]]:

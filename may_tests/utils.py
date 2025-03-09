@@ -1,10 +1,13 @@
 import json
+import os
 import os.path
 import sys
-from src.external_api import currency_exchange_rate
-import os
-from dotenv import load_dotenv
+
 import requests
+from dotenv import load_dotenv
+
+from src.external_api import currency_exchange_rate
+
 list_tr = []
 load_dotenv()
 way = os.getenv("WAY_TRANSACTION")

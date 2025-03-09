@@ -1,8 +1,6 @@
 import datetime
 import logging
 
-from mypy.types import AnyType
-
 
 def log(filename=None):
     """
@@ -15,7 +13,7 @@ def log(filename=None):
         filemode="w",
     )
 
-    def wrapper(function)->None:
+    def wrapper(function) -> None:
         def inner(arg):
             try:
                 print(function, arg, filename)
@@ -38,7 +36,7 @@ def log(filename=None):
     return wrapper
 
 
-#
+
 @log("mylog.txt")
 def mask_account_cards(text):
     return

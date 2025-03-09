@@ -1,11 +1,11 @@
-from src.utils import transactions_sum, list_transactions
 import pytest
 
+from src.utils import dictionary_transactions, transactions_sum
 
 
-def test_transactions_sum(zero):
+def test_transactions_sum(zeroo):
     print(transactions_sum)
-    assert transactions_sum([]) == 'ошибка данных'
+    assert transactions_sum({}) == 0
 
 
 def test_transactions_sum_1(test_transactions_1):
@@ -13,6 +13,6 @@ def test_transactions_sum_1(test_transactions_1):
     assert transactions_sum(test_transactions_1) == 60888.63
 
 
-def test_list_transactions(we):
+def test_dictionary_transactions(we):
     print(we)
-    assert  list_transactions(we) == []
+    assert dictionary_transactions(we) == {}
