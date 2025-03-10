@@ -4,7 +4,6 @@ import os
 import random
 
 from dotenv import load_dotenv
-
 from src.external_api import currency_exchange_rate
 from src.list_currency import list_currency
 
@@ -14,8 +13,6 @@ file_formatter = logging.Formatter("%(asctime)s %(name)s %(levelname)s: %(messag
 file_handler.setFormatter(file_formatter)
 logger.addHandler(file_handler)
 logger.setLevel(logging.DEBUG)
-
-dictionary_tr = {}
 
 
 def dictionary_transactions(wa_ys: str) -> dict:
@@ -51,7 +48,7 @@ def transactions_sum(dict_transaction: dict) -> float:
 
     """функция вычисляет сумму транзакций в рублях. Валюту пересчитывает по курсу"""
 
-    global summa_tr, currency
+    summa_tr = 0
     logger.info("начало работы функции transactions_sum")
     logger.info("рассматриваем транзакцию: ")
     logger.info(dict_transaction)
@@ -79,8 +76,7 @@ def transactions_sum(dict_transaction: dict) -> float:
 
     if currency in list_currency:  # проверяем есть ли данная валюта в списке конвертируемых
         course_currency = currency_exchange_rate(currency)  # отправляем запрос на конвертацию
-
-        summa_tr = round(summa_tr * course_currency, 2)  # вычисляем транзакцию с учётом курса валюты
+        summa_tr = float(f"{(summa_tr * course_currency): .2f}")  # вычисляем транзакцию с учётом курса валюты
         logger.info("сумма транзакции с учётом курса валюты: ")
         logger.info(summa_tr)
         return summa_tr

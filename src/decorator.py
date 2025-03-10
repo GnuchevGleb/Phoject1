@@ -1,5 +1,8 @@
 import datetime
 import logging
+from typing import Callable
+
+from mypy.types import AnyType
 
 
 def log(filename=None):
@@ -13,8 +16,8 @@ def log(filename=None):
         filemode="w",
     )
 
-    def wrapper(function) -> None:
-        def inner(arg):
+    def wrapper(function) -> Callable[[AnyType], None]:
+        def inner(arg: AnyType):
             try:
                 print(function, arg, filename)
                 start_time = datetime.datetime.now()
@@ -26,15 +29,12 @@ def log(filename=None):
                 logging.info(f"Функция {function.__name__} выполнялась {end_time - start_time} секунд")
                 print(f"Функция {function.__name__} выполнялась {end_time - start_time} секунд")
                 logging.info("my_function ok")
-            except:
+            except BaseException:
                 logging.exception("Exception occurred", exc_info=True)
-
-            return
 
         return inner
 
     return wrapper
-
 
 
 @log("mylog.txt")

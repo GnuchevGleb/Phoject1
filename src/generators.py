@@ -1,7 +1,7 @@
 from typing import Generator
 
 
-def card_number_generator(start: int, stop: int) -> str:
+def card_number_generator(start: int, stop: int) -> list[str] | str:
 
     """
     генератор card_number_generator выдает номера банковских карт в формате
@@ -25,7 +25,7 @@ def card_number_generator(start: int, stop: int) -> str:
             )
             # yield  card_number_format
             card_number_list.append(card_number_format)
-        return card_number_list
+        return list(card_number_list)
 
     else:
         return str("ошибка")
