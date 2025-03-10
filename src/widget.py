@@ -24,6 +24,7 @@ def mask_account_card(card_number_account: str) -> str:
 
             return f"{card_number_account[:-16]}{(get_mask_card_number(str(card_number_account[-16:])))}"
         return str("ошибка ввода")
+    assert False
 
 
 def get_date(date_time_1: str) -> str:

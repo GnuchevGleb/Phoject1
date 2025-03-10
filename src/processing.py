@@ -50,8 +50,7 @@ def sort_by_date(dictionaries_list: list[dict[str, Any]], reverse: bool = True) 
         for step in dictionaries_list:
             date_object = step.get("date")[:10]
             datetime.strptime(date_object, "%Y-%m-%d").date()
-
-    except:
+    except BaseException:
         return "ошибка формата даты"
 
     return sorted(dictionaries_list, key=lambda x: str(x["date"]), reverse=reverse)
