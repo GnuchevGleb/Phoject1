@@ -1,0 +1,192 @@
+import pytest
+import os
+
+from dotenv import load_dotenv
+
+
+@pytest.fixture
+def list_number_1():
+    return [
+        {"id": 414288291, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
+        {"id": 615064591, "state": "CANCELED", "date": "2018-10-14T08:21:33.419441"},
+        {"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},
+        {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
+        {"id": 594226727, "state": "CANCELED", "date": "2017-09-12T21:27:25.241689"},
+        {"id": 939719571, "state": "EXECUTED", "date": "2016-06-30T02:08:58.425572"},
+    ]
+
+
+@pytest.fixture
+def account_card():
+    return [
+        ("Maestro 1596837868705199", "Maestro 1596 83** **** 5199"),
+        ("MasterCard 7158300734726758", "MasterCard 7158 30** **** 6758"),
+        ("Maestro ", "ошибка ввода"),
+        ("Maestro 1 96837868705199", "ошибка ввода"),
+        ("MasterCard 71ыв300734726758", "ошибка ввода"),
+        ("Счет 73654108430135874305", "Счет **4305"),
+        ("Счет  73654108430135874305", "Счет **4305"),
+        ("Счет7365410430135874305", "ошибка ввода"),
+        ("Счет", "ошибка ввода"),
+        ("Счет 7 65410430135874305", "ошибка ввода"),
+        ("Счет 7sd -410430135874305", "ошибка ввода"),
+    ]
+
+
+@pytest.fixture
+def executed():
+    return [
+        {"id": 414288291, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
+        {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
+        {"id": 939719571, "state": "EXECUTED", "date": "2016-06-30T02:08:58.425572"},
+    ]
+
+
+@pytest.fixture
+def canceled():
+    return [
+        {"id": 615064591, "state": "CANCELED", "date": "2018-10-14T08:21:33.419441"},
+        {"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},
+        {"id": 594226727, "state": "CANCELED", "date": "2017-09-12T21:27:25.241689"},
+    ]
+
+
+@pytest.fixture
+def zero():
+    return []
+
+
+@pytest.fixture
+def zeroo():
+    return {}
+
+
+#
+#
+@pytest.fixture
+def sort():
+    return [
+        {"id": 414288291, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
+        {"id": 615064591, "state": "CANCELED", "date": "2018-10-14T08:21:33.419441"},
+        {"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},
+        {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
+        {"id": 594226727, "state": "CANCELED", "date": "2017-09-12T21:27:25.241689"},
+        {"id": 939719571, "state": "EXECUTED", "date": "2016-06-30T02:08:58.425572"},
+    ]
+
+
+@pytest.fixture
+def revers():
+    return [
+        {"id": 939719571, "state": "EXECUTED", "date": "2016-06-30T02:08:58.425572"},
+        {"id": 594226727, "state": "CANCELED", "date": "2017-09-12T21:27:25.241689"},
+        {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
+        {"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},
+        {"id": 615064591, "state": "CANCELED", "date": "2018-10-14T08:21:33.419441"},
+        {"id": 414288291, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
+    ]
+
+
+@pytest.fixture
+def list_error():
+    return [
+        {"id": 414288291, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
+        {"id": 615064591, "state": "CANCELED", "date": "2018/10/14T08:21:33.419441"},
+        {"id": 594226727, "state": "CANCELED", "date": "2018.09.12T21:27:25.241689"},
+        {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
+        {"id": 594226727, "state": "CANCELED", "date": "2017-09-12T21:27:25.241689"},
+        {"id": 939719571, "state": "EXECUTED", "date": "2016-06-30T02:08:58.425572"},
+    ]
+
+
+@pytest.fixture
+def test_transactions():
+    return [
+        {
+            "id": 939719570,
+            "state": "EXECUTED",
+            "date": "2018-06-30T02:08:58.425572",
+            "operationAmount": {"amount": "9824.07", "currency": {"name": "USD", "code": "USD"}},
+            "description": "Перевод организации",
+            "from": "Счет 75106830613657916952",
+            "to": "Счет 11776614605963066702",
+        },
+        {
+            "id": 142264268,
+            "state": "EXECUTED",
+            "date": "2019-04-04T23:20:05.206878",
+            "operationAmount": {"amount": "79114.93", "currency": {"name": "USD", "code": "USD"}},
+            "description": "Перевод со счета на счет",
+            "from": "Счет 19708645243227258542",
+            "to": "Счет 75651667383060284188",
+        },
+        {
+            "id": 873106923,
+            "state": "EXECUTED",
+            "date": "2019-03-23T01:09:46.296404",
+            "operationAmount": {"amount": "43318.34", "currency": {"name": "руб.", "code": "RUB"}},
+            "description": "Перевод со счета на счет",
+            "from": "Счет 44812258784861134719",
+            "to": "Счет 74489636417521191160",
+        },
+        {
+            "id": 895315941,
+            "state": "EXECUTED",
+            "date": "2018-08-19T04:27:37.904916",
+            "operationAmount": {"amount": "56883.54", "currency": {"name": "USD", "code": "USD"}},
+            "description": "Перевод с карты на карту",
+            "from": "Visa Classic 6831982476737658",
+            "to": "Visa Platinum 8990922113665229",
+        },
+        {
+            "id": 594226727,
+            "state": "CANCELED",
+            "date": "2018-09-12T21:27:25.241689",
+            "operationAmount": {"amount": "67314.70", "currency": {"name": "руб.", "code": "RUB"}},
+            "description": "Перевод организации",
+            "from": "Visa Platinum 1246377376343588",
+            "to": "Счет 14211924144426031657",
+        },
+    ]
+
+
+@pytest.fixture
+def filename_zero():
+    return ()
+
+
+@pytest.fixture
+def filename():
+    return "mylog+.txt"
+
+
+@pytest.fixture
+def test_transactions_1():
+    return {
+        "id": 104807525,
+        "state": "EXECUTED",
+        "date": "2019-06-01T06:46:16.803326",
+        "operationAmount": {"amount": "60888.63", "currency": {"name": "руб.", "code": "RUB"}},
+        "description": "Перевод с карты на счет",
+        "from": "МИР 8201420097886664",
+        "to": "Счет 35116633516390079956",
+    }
+
+
+@pytest.fixture
+def we():
+    return "/home"
+
+
+@pytest.fixture
+def file_not():
+    return "/home/gleb/PycharmProjects/PythonProject22/data/transactions.csvv"
+
+
+load_dotenv()
+dictionary_tr = os.getenv("WAY_TRANSACTION_CSV")
+
+
+@pytest.fixture
+def tst_sv():
+    return dictionary_tr
